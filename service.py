@@ -31,7 +31,9 @@ class KeywordMonitorService:
 
             for b in batches:
                 batch_id = b.get("id")
-                if not force and is_batch_fetched(batch_id):
+                # 对最近 5 个批次总是允许更新（因为哥飞服务端在批次生成后数小时内会持续回填评级、出现日期与走势分析）
+                is_recent = (page == 1 and batches.index(b) < 5)
+                if not force and not is_recent and is_batch_fetched(batch_id):
                     batches_skipped += 1
                     continue
 
