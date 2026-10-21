@@ -24,6 +24,7 @@ from service import KeywordMonitorService
 from db import get_connection
 from ai_gatekeeper import evaluate_keyword
 from cc_connect_notifier import send_keyword_alert
+from generate_ui import generate_dashboard
 
 svc = KeywordMonitorService()
 
@@ -225,6 +226,11 @@ def start_daemon(interval: int = 600):
         print(f"[*] 发现 {unreviewed_count} 个历史旧词，正在执行防刷屏归档...")
         mark_all_historical_reviewed()
 
+    try:
+        generate_dashboard()
+    except Exception:
+        pass
+
     while True:
         try:
             now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -237,6 +243,10 @@ def start_daemon(interval: int = 600):
                 print(f"[{now_str}] 抓取到 {fetched} 个新批次，入库新词 {new_kw} 个。开始执行门禁筛选...")
                 approved = screen_unreviewed_keywords()
                 print(f"[{now_str}] 本轮筛选完成，推送高价值付费工具: {len(approved)} 个")
+                try:
+                    generate_dashboard()
+                except Exception as ge:
+                    print(f"[!] 自动更新 HTML 看板异常: {ge}")
             else:
                 print(f"[{now_str}] 暂无新批次更新（已是最新数据）。")
                 # 兜底扫描是否有残留未审词
@@ -266,4 +276,8 @@ if __name__ == "__main__":
         print("[*] 执行单次扫描检查...")
         res = svc.sync(max_pages=1, force=False)
         approved = screen_unreviewed_keywords()
+        try:
+            generate_dashboard()
+        except Exception:
+            pass
         print(f"[*] 完成。通过并推送词数: {len(approved)}")

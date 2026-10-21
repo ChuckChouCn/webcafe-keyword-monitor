@@ -75,6 +75,9 @@ def main():
     p_daemon.add_argument("--interval", type=int, default=1800, help="轮询间隔（秒，默认 1800 即 30 分钟）")
     p_daemon.add_argument("--webhook", type=str, help="飞书机器人 Webhook 地址（如果不传则读取 config.py 中的配置）")
 
+    # ui / dashboard
+    p_ui = subparsers.add_parser("ui", help="生成并打开哥飞 1:1 对标看板网页 (dashboard.html)")
+
     args = parser.parse_args()
     if not args.command:
         parser.print_help()
@@ -357,6 +360,19 @@ def main():
                 print(f"[!] 监控轮询出错: {e}")
 
             time.sleep(args.interval)
+
+    elif args.command == "ui":
+        from generate_ui import generate_dashboard
+        html_file = generate_dashboard()
+        print("\n[+] 哥飞 1:1 对标看板网页已生成！")
+        print("    - 本地文件路径: /home/chuck/projects/agy/data/dashboard.html")
+        print("    - Windows 访问路径: \\\\wsl.localhost\\Ubuntu\\home\\chuck\\projects\\agy\\data\\dashboard.html")
+        try:
+            import subprocess
+            subprocess.run(["explorer.exe", "\\\\wsl.localhost\\Ubuntu\\home\\chuck\\projects\\agy\\data\\dashboard.html"], stderr=subprocess.DEVNULL)
+            print("    - [✓] 已通过 explorer.exe 唤起 Windows 默认浏览器打开看板！")
+        except Exception:
+            pass
 
 if __name__ == "__main__":
     main()

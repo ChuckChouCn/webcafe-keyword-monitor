@@ -362,12 +362,15 @@ def generate_dashboard():
 
     local_html_path = DATA_DIR / "dashboard.html"
     local_html_path.write_text(html_content, encoding="utf-8")
-    print(f"[+] 本地看板已更新: {local_html_path.resolve()}")
+    print(f"[+] 数据目录看板已更新: {local_html_path.resolve()}")
 
-    artifact_dir = Path(r"C:\Users\32424\.gemini\antigravity\brain\521bdd3f-2227-458c-b94d-22542c9792f7")
-    artifact_path = artifact_dir / "dashboard.html"
-    artifact_path.write_text(html_content, encoding="utf-8")
-    print(f"[+] Artifact 看板已更新: {artifact_path.resolve()}")
+    try:
+        from config import BASE_DIR
+        root_html_path = BASE_DIR / "dashboard.html"
+        root_html_path.write_text(html_content, encoding="utf-8")
+        print(f"[+] 项目根目录看板已更新: {root_html_path.resolve()}")
+    except Exception:
+        pass
 
 if __name__ == "__main__":
     generate_dashboard()

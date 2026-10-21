@@ -14,6 +14,7 @@ env/
 ENV/
 
 # 本地运行时生成的数据库与缓存 (Runtime Database & Cache)
+dashboard.html
 data/keywords.db
 data/keywords.db-shm
 data/keywords.db-wal
