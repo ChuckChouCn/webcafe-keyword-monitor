@@ -1,0 +1,36 @@
+# 环境变量与敏感配置 (Secrets & Environment)
+.env
+.env.local
+.env.*.local
+
+# Python 缓存与虚拟环境 (Python bytecode & VirtualEnv)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+env/
+ENV/
+
+# 本地运行时生成的数据库与缓存 (Runtime Database & Cache)
+data/keywords.db
+data/keywords.db-shm
+data/keywords.db-wal
+data/*.csv
+data/dashboard.html
+data/reports/*
+!data/reports/.gitkeep
+!data/.gitkeep
+
+# 运行时日志 (Logs)
+*.log
+logs/
+
+# 智能体本地运行态记忆与临时文件 (Runtime context & local artifacts)
+.recent_pushed_keywords.json
+feishu_qr.png
+
+# 系统文件 (OS metadata)
+.DS_Store
+Thumbs.db

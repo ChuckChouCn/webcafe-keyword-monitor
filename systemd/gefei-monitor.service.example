@@ -1,0 +1,37 @@
+# ==============================================================================
+# systemd 用户服务模板 (gefei-monitor.service.example)
+#
+# 使用指南：
+# 1. 复制本文件到 ~/.config/systemd/user/gefei-monitor.service:
+#    mkdir -p ~/.config/systemd/user
+#    cp systemd/gefei-monitor.service.example ~/.config/systemd/user/gefei-monitor.service
+#
+# 2. 修改其中的 WorkingDirectory 和 ExecStart 为你的实际项目绝对路径
+#
+# 3. 启用并启动守护服务：
+#    systemctl --user daemon-reload
+#    systemctl --user enable gefei-monitor.service
+#    systemctl --user start gefei-monitor.service
+#
+# 4. 查看运行状态与日志：
+#    systemctl --user status gefei-monitor.service
+#    journalctl --user -u gefei-monitor.service -f
+# ==============================================================================
+
+[Unit]
+Description=Gefei Keyword Monitor with AI Gatekeeper
+After=network.target
+
+[Service]
+Type=simple
+# 请将 /path/to/project 替换为你的真实绝对路径 (如 /home/user/projects/agy)
+WorkingDirectory=/path/to/project
+ExecStart=/usr/bin/python3 /path/to/project/monitor_pipeline.py --daemon --interval 600
+Restart=always
+RestartSec=15
+Environment=PYTHONUNBUFFERED=1
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

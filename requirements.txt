@@ -1,0 +1,7 @@
+# 核心依赖 (Core Dependencies)
+requests>=2.28.0
+
+# 可选依赖 (Optional Dependencies)
+python-dotenv>=1.0.0      # 增强环境变量管理 (代码自带原生 .env 解析兜底)
+pandas>=2.0.0             # 高性能数据表操作 (export 模块自带标准库 csv 兜底)
+lark-oapi>=1.2.0          # 飞书官方 SDK (仅在启动 feishu_ws_bot 长连接机器人时需要)
